@@ -1,0 +1,22 @@
+main: com.pwn9.PwnRaid.PwnRaid
+name: PwnRaid
+version: 0.1
+author: tremor77
+description: Start and manage villager raids.
+website: http://pwn9.com
+api-version: 1.14
+commands:
+   pwnraid:
+      description: Execute a PwnRaid command
+      usage: /pwnraid <reload|save>
+      permission: pwnraid.pwnraid
+      permission-message: You dont have permission for this command
+permissions:
+  pwnraid.*:
+    description: gives all permissions of PwnRaid
+    default: op
+    children:
+        pwnlay.pwnraid: true
+        pwnlay.reload: true 
+        pwnlay.save: true
+        pwnraid.bell: true

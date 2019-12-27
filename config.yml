@@ -1,0 +1,7 @@
+# Which worlds should this be enabled in?
+enabled_worlds:
+    - example_world
+    - example_world_nether
+
+# Enable logging (for debugging, generally leave this false unless you are having problems)
+debug_log: true
