@@ -66,7 +66,10 @@ public class RingBellListener implements Listener
 		
 		//TODO: the second argument is time, which doesn't really matter, player is probably already in a village.
 		
-		//TODO: the 3rd argument is intensity, does this set the bad omen level that the raid will inherit? Apparently it does not.
+		// we'll make use of a var to handle the omen level and pass it on to the raid listener
+		PwnRaid.currentOmenLevel = i;
+		
+		//TODO: the 3rd argument is intensity, does this set the bad omen level that the raid will inherit? Apparently it does not.	
 		PotionEffect b = new PotionEffect(bo, 20, i);
 				
 		p.addPotionEffect(b);

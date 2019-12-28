@@ -23,9 +23,12 @@ public class RaidListener implements Listener
 		
 		Raid r = e.getRaid();
 		
-		int l = r.getBadOmenLevel();
+		// set the bad omen level based on the item used to ring the bell
+		r.setBadOmenLevel(PwnRaid.currentOmenLevel);
 		
-		String msg = p.getDisplayName() + " has triggered a level " + l + " raid!";
+		int l = r.getBadOmenLevel();
+			
+		String msg = "PwnRaid: " + p.getDisplayName() + " has triggered a level " + l + " raid!";
 		
 		if (p != null) {
 			plugin.getServer().broadcastMessage(msg);
