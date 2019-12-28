@@ -16,23 +16,34 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.pwn9.PwnRaid.RingBellListener;
+import com.pwn9.PwnRaid.RaidListener;
+
 public class PwnRaid extends JavaPlugin 
 {
+	// For convenience, a reference to the instance of this plugin
+	public static PwnRaid instance;
+	
 	// Init vars
 	public static File dataFolder;
 	public final Logger logger = Logger.getLogger("Minecraft.PwnRaid");   	
 	public static List<String> enabledWorlds;
 	public static Boolean logEnabled;
+	
 	static Random randomNumberGenerator = new Random();
+	
 	public static PluginDescriptionFile pdfFile;
 	
 	@Override
 	public void onEnable() 
 	{
-    	this.saveDefaultConfig();
+    	instance = this;
+    	
+		this.saveDefaultConfig();
     	
     	// Init Listener
-    	new PwnRaidBellListener(this);
+    	new RingBellListener(this);
+    	new RaidListener(this);
     	
     	// Get Data Folder
     	PwnRaid.dataFolder = getDataFolder();
@@ -42,10 +53,7 @@ public class PwnRaid extends JavaPlugin
     	
     	// Load plugin.yml
     	PwnRaid.pdfFile = this.getDescription(); //Gets plugin.yml
-    	
-    	// Command Executor
-    	getCommand("pwnraid").setExecutor(new PwnRaidCommands(this));
-    		
+    	    		
 		// Start Metrics
 		MetricsLite metricslite = new MetricsLite(this);
 		
@@ -92,7 +100,7 @@ public class PwnRaid extends JavaPlugin
 			    	dataFolder.mkdir();
 			    }
 			     
-			    File saveTo = new File(dataFolder, "pwnchickenlay.log");
+			    File saveTo = new File(dataFolder, "pwnraid.log");
 			    if (!saveTo.exists())  
 			    {
 			    	saveTo.createNewFile();

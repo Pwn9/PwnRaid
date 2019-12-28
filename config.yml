@@ -1,7 +1,14 @@
 # Which worlds should this be enabled in?
 enabled_worlds:
-    - example_world
-    - example_world_nether
+    - world
+
+# set items to trigger raids
+trigger_item:
+    WOODEN_HOE: 1
+    STONE_HOE: 2
+    IRON_HOE: 3
+    GOLDEN_HOE: 4
+    DIAMOND_HOE: 5
 
 # Enable logging (for debugging, generally leave this false unless you are having problems)
 debug_log: true
