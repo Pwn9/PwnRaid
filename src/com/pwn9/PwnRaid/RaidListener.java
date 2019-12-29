@@ -19,6 +19,9 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidStart(RaidTriggerEvent e) 
 	{	
+		// set raid in progress
+		PwnRaid.raidInProgress = true;
+		
 		Player p = e.getPlayer();
 		
 		Raid r = e.getRaid();
@@ -36,6 +39,7 @@ public class RaidListener implements Listener
 		
 		
 	}
+	
 	
 	
 }

@@ -30,7 +30,9 @@ public class PwnRaid extends JavaPlugin
 	public static List<String> enabledWorlds;
 	public static Boolean logEnabled;
 	
-	public static int currentOmenLevel; 
+	// Other vars
+	public static int currentOmenLevel = 0; 
+	public static Boolean raidInProgress = false;
 	
 	static Random randomNumberGenerator = new Random();
 	

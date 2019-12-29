@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -31,13 +30,17 @@ public class RingBellListener implements Listener
 			return;
 		}
 
+		// check to see if a PwnRaid is already in progress
+		if (PwnRaid.raidInProgress) {
+			e.getPlayer().sendMessage("PwnRaid: A raid is already in progress, cannot start another");
+			return;
+		}
+		
 		if ((e.getClickedBlock() != null) && (e.getClickedBlock().getType() != Material.BELL)) {
 			return;
 		}
 		
-
-		//TODO: make item clicking bell configurable
-		//TODO: make 5 items each one sets a different bad omen level
+		// items are configured in config.yml with levels
 		if (e.getItem() != null) {
 			
 			if (plugin.getConfig().getInt("trigger_item." + e.getItem().getType()) > 0) {
@@ -52,10 +55,8 @@ public class RingBellListener implements Listener
 			
 			return;
 		}
-		
 
 		return;
-		
 	}
 	
 	// start the raid event by effecting the player
