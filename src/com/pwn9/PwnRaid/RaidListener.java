@@ -30,7 +30,7 @@ public class RaidListener implements Listener
 	{	
 		// set raid in progress
 		PwnRaid.raidInProgress = true;
-		PwnRaid.currentWaveNumber = 1;
+		PwnRaid.currentWaveNumber = 0;
 		
 		// get some infos
 		Player p = e.getPlayer();
@@ -46,10 +46,7 @@ public class RaidListener implements Listener
 		if (p != null) {
 			plugin.getServer().broadcastMessage(msg);
 		}
-		
-		
-		this.spawnWaveExtraMobs(w, loc, PwnRaid.currentWaveNumber);
-		
+
 		return;
 	}
 	
@@ -86,16 +83,15 @@ public class RaidListener implements Listener
 		return;
 	}
 
-	// spawn a charged creeper within a random distance from the raid center
-	public void spawnSuperCreeper(World w, Location loc)
-	{
+	public Location getRandomLocNearby(World w, Location loc, int d) 
+	{	
 		int x = loc.getBlockX();
 		int z = loc.getBlockZ();
 
-		int xr = PwnRaid.randomNumberGenerator.nextInt(40);
-		int zr = PwnRaid.randomNumberGenerator.nextInt(40);
-		int ixr = PwnRaid.randomNumberGenerator.nextInt(40);
-		int izr = PwnRaid.randomNumberGenerator.nextInt(40);
+		int xr = PwnRaid.randomNumberGenerator.nextInt(d);
+		int zr = PwnRaid.randomNumberGenerator.nextInt(d);
+		int ixr = PwnRaid.randomNumberGenerator.nextInt(d);
+		int izr = PwnRaid.randomNumberGenerator.nextInt(d);
 		
 		int fxr = x + (xr - ixr);
 		int fzr = z + (zr - izr);
@@ -103,6 +99,15 @@ public class RaidListener implements Listener
 		Block b = loc.getWorld().getHighestBlockAt(fxr, fzr);
 
 		Location newLoc = b.getLocation();
+		
+		return newLoc;
+	}
+	
+	
+	// spawn a charged creeper within a random distance from the raid center
+	public void spawnSuperCreeper(World w, Location loc)
+	{
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
 		
 		// spawn a charged creeper for kicks
 		Creeper creeper = (Creeper)w.spawnEntity(newLoc, EntityType.CREEPER);
@@ -116,32 +121,33 @@ public class RaidListener implements Listener
 	// spawn a charged creeper within a random distance from the raid center
 	public void spawnGhast(World w, Location loc)
 	{
-		int x = loc.getBlockX();
-		int z = loc.getBlockZ();
-
-		int xr = PwnRaid.randomNumberGenerator.nextInt(40);
-		int zr = PwnRaid.randomNumberGenerator.nextInt(40);
-		int ixr = PwnRaid.randomNumberGenerator.nextInt(40);
-		int izr = PwnRaid.randomNumberGenerator.nextInt(40);
-		
-		int fxr = x + (xr - ixr);
-		int fzr = z + (zr - izr);
-		
-		Block b = loc.getWorld().getHighestBlockAt(fxr, fzr);
-
-		Location newLoc = b.getLocation();
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
 		
 		// spawn a ghast for kicks
-		Ghast ghast = (Ghast)w.spawnEntity(newLoc, EntityType.CREEPER);	
+		Ghast ghast = (Ghast)w.spawnEntity(newLoc, EntityType.GHAST);	
 		ghast.setCustomName("Raid-A-Ghast");
 		ghast.setCustomNameVisible(true);
 		
 		return;
 	}
+
+	// spawn primed tnt
+	public void spawnTnt(World w, Location loc)
+	{
+		Location newLoc = this.getRandomLocNearby(w, loc, 80);
+		newLoc.setY(newLoc.getY() + 30.00);
+		// spawn tnt for kicks
+		w.spawnEntity(newLoc, EntityType.PRIMED_TNT); 
+		return;
+	}	
 	
 	//todo: a routine that will spawn a set of extra mobs each wave for extra fun
 	public void spawnWaveExtraMobs(World w, Location loc, int wave)
 	{
+		
+		String wavemsg = "PwnRaid: Round " + wave + " of Pillager raids has begun!";
+		plugin.getServer().broadcastMessage(wavemsg);
+		
 		if (wave == 1) 
 		{
 			this.spawnSuperCreeper(w, loc);
@@ -174,6 +180,19 @@ public class RaidListener implements Listener
 		}		
 		else {
 			// wave must be 0
+		}
+		
+		
+		// artillery
+		if (wave == 3 || wave == 6 || wave == 9)
+		{
+			String msg = "PwnRaid: Raid Captain ~ Enough messing around... call in artillery!!!";
+			plugin.getServer().broadcastMessage(msg);
+			this.spawnTnt(w, loc);
+			this.spawnTnt(w, loc);
+			this.spawnTnt(w, loc);
+			this.spawnTnt(w, loc);
+			this.spawnTnt(w, loc);
 		}
 		
 		return;
