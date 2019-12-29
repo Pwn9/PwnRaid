@@ -75,12 +75,6 @@ public class PwnRaid extends JavaPlugin
 		}	
 	}	
 	
-	// Generate a random number and return bool
-	static boolean random(int percentChance) 
-	{
-		return randomNumberGenerator.nextInt(100) > percentChance;
-	}
-	
 	// Check enabled worlds list and return bool
 	public static boolean isEnabledIn(String world) 
 	{

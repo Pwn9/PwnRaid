@@ -3,6 +3,7 @@ package com.pwn9.PwnRaid;
 import org.bukkit.Location;
 import org.bukkit.Raid;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -44,10 +45,8 @@ public class RaidListener implements Listener
 			plugin.getServer().broadcastMessage(msg);
 		}
 		
-		//TODO: create mob spawning class for waves
-		// spawn a charged creeper for kicks
-		Creeper creeper = (Creeper)w.spawnEntity(loc, EntityType.CREEPER);
-		creeper.setPowered(true);		
+		//TODO: create mob spawning function for waves that will spawn random mobs in random locations, and perhaps every x ticks
+		this.spawnMob(w, loc);
 		
 	}
 	
@@ -57,10 +56,7 @@ public class RaidListener implements Listener
 		// get some infos
 		World w = e.getWorld();
 		Location loc = e.getRaid().getLocation();
-		
-		// spawn a charged creeper for kicks
-		Creeper creeper = (Creeper)w.spawnEntity(loc, EntityType.CREEPER);
-		creeper.setPowered(true);	
+		this.spawnMob(w, loc);
 	}
 		
 	@EventHandler(ignoreCancelled = false)
@@ -69,7 +65,6 @@ public class RaidListener implements Listener
 		// raid no longer in progress
 		PwnRaid.raidInProgress = false;
 	}
-
 	
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidStop(RaidStopEvent e) 
@@ -78,6 +73,28 @@ public class RaidListener implements Listener
 		PwnRaid.raidInProgress = false;
 	}
 
+	// spawn a mob 
+	public void spawnMob(World w, Location loc)
+	{
+		int x = loc.getBlockX();
+		int z = loc.getBlockZ();
 
+		int xr = PwnRaid.randomNumberGenerator.nextInt(40);
+		int zr = PwnRaid.randomNumberGenerator.nextInt(40);
+		int ixr = PwnRaid.randomNumberGenerator.nextInt(40);
+		int izr = PwnRaid.randomNumberGenerator.nextInt(40);
+		
+		int fxr = x + (xr - ixr);
+		int fzr = z + (zr - izr);
+		
+		Block b = loc.getWorld().getHighestBlockAt(fxr, fzr);
+
+		Location newLoc = b.getLocation();
+		
+		// spawn a charged creeper for kicks
+		Creeper creeper = (Creeper)w.spawnEntity(newLoc, EntityType.CREEPER);
+		creeper.setPowered(true);		
+		
+	}
 	
 }
