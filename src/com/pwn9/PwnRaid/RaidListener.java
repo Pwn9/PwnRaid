@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +30,7 @@ public class RaidListener implements Listener
 	{	
 		// set raid in progress
 		PwnRaid.raidInProgress = true;
+		PwnRaid.currentWaveNumber = 1;
 		
 		// get some infos
 		Player p = e.getPlayer();
@@ -45,36 +47,47 @@ public class RaidListener implements Listener
 			plugin.getServer().broadcastMessage(msg);
 		}
 		
-		//TODO: create mob spawning function for waves that will spawn random mobs in random locations, and perhaps every x ticks
-		this.spawnMob(w, loc);
 		
+		this.spawnWaveExtraMobs(w, loc, PwnRaid.currentWaveNumber);
+		
+		return;
 	}
 	
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidWave(RaidSpawnWaveEvent e) 
 	{	
+		PwnRaid.currentWaveNumber = PwnRaid.currentWaveNumber + 1;
 		// get some infos
 		World w = e.getWorld();
 		Location loc = e.getRaid().getLocation();
-		this.spawnMob(w, loc);
+		
+		this.spawnWaveExtraMobs(w, loc, PwnRaid.currentWaveNumber);
+		
+		return;
 	}
 		
+	// Raid finish has a clear winner
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidFinish(RaidFinishEvent e) 
 	{	
-		// raid no longer in progress
-		PwnRaid.raidInProgress = false;
+		// cleanup routine
+		this.raidEnded();
+		
+		return;
 	}
 	
+	// Raid stop is a cancelled raid for some other reason
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidStop(RaidStopEvent e) 
 	{	
-		// raid no longer in progress
-		PwnRaid.raidInProgress = false;
+		// cleanup routine
+		this.raidEnded();
+		
+		return;
 	}
 
-	// spawn a mob 
-	public void spawnMob(World w, Location loc)
+	// spawn a charged creeper within a random distance from the raid center
+	public void spawnSuperCreeper(World w, Location loc)
 	{
 		int x = loc.getBlockX();
 		int z = loc.getBlockZ();
@@ -93,8 +106,85 @@ public class RaidListener implements Listener
 		
 		// spawn a charged creeper for kicks
 		Creeper creeper = (Creeper)w.spawnEntity(newLoc, EntityType.CREEPER);
-		creeper.setPowered(true);		
+		creeper.setPowered(true);	
+		creeper.setCustomName("Door Knocker");
+		creeper.setCustomNameVisible(true);
 		
+		return;
+	}
+	
+	// spawn a charged creeper within a random distance from the raid center
+	public void spawnGhast(World w, Location loc)
+	{
+		int x = loc.getBlockX();
+		int z = loc.getBlockZ();
+
+		int xr = PwnRaid.randomNumberGenerator.nextInt(40);
+		int zr = PwnRaid.randomNumberGenerator.nextInt(40);
+		int ixr = PwnRaid.randomNumberGenerator.nextInt(40);
+		int izr = PwnRaid.randomNumberGenerator.nextInt(40);
+		
+		int fxr = x + (xr - ixr);
+		int fzr = z + (zr - izr);
+		
+		Block b = loc.getWorld().getHighestBlockAt(fxr, fzr);
+
+		Location newLoc = b.getLocation();
+		
+		// spawn a ghast for kicks
+		Ghast ghast = (Ghast)w.spawnEntity(newLoc, EntityType.CREEPER);	
+		ghast.setCustomName("Raid-A-Ghast");
+		ghast.setCustomNameVisible(true);
+		
+		return;
+	}
+	
+	//todo: a routine that will spawn a set of extra mobs each wave for extra fun
+	public void spawnWaveExtraMobs(World w, Location loc, int wave)
+	{
+		if (wave == 1) 
+		{
+			this.spawnSuperCreeper(w, loc);
+		}
+		else if (wave == 2)
+		{
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+		}
+		else if (wave == 3) 
+		{
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+		}
+		else if (wave == 4) 
+		{
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+		}		
+		else if (wave > 4) 
+		{
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+		}		
+		else {
+			// wave must be 0
+		}
+		
+		return;
+	}
+	
+	// cleanup routine for when a raid ends
+	public void raidEnded() 
+	{
+		// raid no longer in progress
+		PwnRaid.raidInProgress = false;
+		PwnRaid.currentWaveNumber = 0;
 	}
 	
 }

@@ -33,6 +33,7 @@ public class PwnRaid extends JavaPlugin
 	// Other vars
 	public static int currentOmenLevel = 0; 
 	public static Boolean raidInProgress = false;
+	public static int currentWaveNumber = 0;
 	
 	
 	static Random randomNumberGenerator = new Random();
