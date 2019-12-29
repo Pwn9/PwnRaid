@@ -37,6 +37,7 @@ public class RingBellListener implements Listener
 		// items are configured in config.yml with levels
 		if (e.getItem() != null) {
 			if (plugin.getConfig().getInt("trigger_item." + e.getItem().getType()) > 0) {
+				
 				// check to see if a PwnRaid is already in progress
 				if (PwnRaid.raidInProgress) {
 					e.getPlayer().sendMessage("PwnRaid: A raid is already in progress, cannot start another");
@@ -44,10 +45,15 @@ public class RingBellListener implements Listener
 				}
 				else {
 					int l = plugin.getConfig().getInt("trigger_item." + e.getItem().getType());
+					
 					//TODO: does player have permission to ring bell and start a raid?
+					
+					// Apply bad omen and trigger the raid!
 					this.doBadOmen(e.getPlayer(), l);
+					
 					PwnRaid.logToFile("Checking item trigger for " + e.getItem().getType().toString() + ": value = " + l);
 				}
+				
 			}
 			return;
 		}

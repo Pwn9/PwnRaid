@@ -34,8 +34,8 @@ public class PwnRaid extends JavaPlugin
 	public static int currentOmenLevel = 0; 
 	public static Boolean raidInProgress = false;
 	
-	static Random randomNumberGenerator = new Random();
 	
+	static Random randomNumberGenerator = new Random();
 	public static PluginDescriptionFile pdfFile;
 	
 	@Override
