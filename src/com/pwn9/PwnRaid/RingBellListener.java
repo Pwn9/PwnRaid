@@ -29,33 +29,28 @@ public class RingBellListener implements Listener
 		if (!PwnRaid.isEnabledIn(w.getName())) {
 			return;
 		}
-
-		// check to see if a PwnRaid is already in progress
-		if (PwnRaid.raidInProgress) {
-			e.getPlayer().sendMessage("PwnRaid: A raid is already in progress, cannot start another");
-			return;
-		}
 		
-		if ((e.getClickedBlock() != null) && (e.getClickedBlock().getType() != Material.BELL)) {
+		if ((e.getClickedBlock() == null) || (e.getClickedBlock().getType() != Material.BELL)) {
 			return;
 		}
 		
 		// items are configured in config.yml with levels
 		if (e.getItem() != null) {
-			
 			if (plugin.getConfig().getInt("trigger_item." + e.getItem().getType()) > 0) {
-				
-				int l = plugin.getConfig().getInt("trigger_item." + e.getItem().getType());
-				
-				//TODO: does player have permission to ring bell and start a raid?
-				this.doBadOmen(e.getPlayer(), l);
-				
-				PwnRaid.logToFile("Checking item trigger for " + e.getItem().getType().toString() + ": value = " + l);
+				// check to see if a PwnRaid is already in progress
+				if (PwnRaid.raidInProgress) {
+					e.getPlayer().sendMessage("PwnRaid: A raid is already in progress, cannot start another");
+					return;
+				}
+				else {
+					int l = plugin.getConfig().getInt("trigger_item." + e.getItem().getType());
+					//TODO: does player have permission to ring bell and start a raid?
+					this.doBadOmen(e.getPlayer(), l);
+					PwnRaid.logToFile("Checking item trigger for " + e.getItem().getType().toString() + ": value = " + l);
+				}
 			}
-			
 			return;
 		}
-
 		return;
 	}
 	
