@@ -41,8 +41,6 @@ public class RaidListener implements Listener
 		// get some infos
 		Player p = e.getPlayer();
 		Raid r = e.getRaid();
-		World w = e.getWorld();
-		Location loc = e.getRaid().getLocation();
 		
 		// set the bad omen level based on the item used to ring the bell and message the server
 		r.setBadOmenLevel(PwnRaid.currentOmenLevel);	
@@ -131,11 +129,20 @@ public class RaidListener implements Listener
 		creeper.setCustomName("Raid Bomber");
 		creeper.setCustomNameVisible(true);
 		
+	    List<Entity> near = creeper.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            creeper.setTarget(nearPlayer);
+	            return;
+	        }
+	    }		
+		
 		return;
 	}
 	
 	
-	// spawn a charged creeper within a random distance from the raid center
+	// spawn a witherjockey random distance from the raid center
 	public void spawnWitherJockey(World w, Location loc)
 	{
 		Location newLoc = this.getRandomLocNearby(w, loc, 40);
@@ -147,18 +154,30 @@ public class RaidListener implements Listener
 		ws.setCustomName("Raid Riding Hood");
 		ws.setCustomNameVisible(true);
 		
+		// target someone
+	    List<Entity> near = ws.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            ws.setTarget(nearPlayer);
+	            return;
+	        }
+	    }
+	    
 		return;
 	}	
-	// spawn a charged creeper within a random distance from the raid center
+	// spawn a ghast within a random distance from the raid center
 	public void spawnGhast(World w, Location loc)
 	{
 		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		newLoc.setY(newLoc.getY() + 20.0D);
 		
 		// spawn a ghast for kicks
 		Ghast ghast = (Ghast)w.spawnEntity(newLoc, EntityType.GHAST);	
 		ghast.setCustomName("Raid-A-Ghast");
 		ghast.setCustomNameVisible(true);
 		
+		// target someone
 	    List<Entity> near = ghast.getNearbyEntities(50.0D, 50.0D, 50.0D);
 	    for(Entity entity : near) {
 	        if(entity instanceof Player) {
@@ -194,26 +213,21 @@ public class RaidListener implements Listener
 		}
 		else if (wave == 2)
 		{
-			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
 		}
 		else if (wave == 3) 
 		{
-			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
 		}
 		else if (wave == 4) 
 		{
 			this.spawnSuperCreeper(w, loc);
-			this.spawnSuperCreeper(w, loc);
-			this.spawnGhast(w, loc);
 			this.spawnGhast(w, loc);
 			this.spawnWitherJockey(w, loc);
 		}		
 		else if (wave > 4 && wave < 9) 
 		{
-			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
@@ -227,7 +241,6 @@ public class RaidListener implements Listener
 			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
 			this.spawnGhast(w, loc);
-			this.spawnWitherJockey(w, loc);
 			this.spawnWitherJockey(w, loc);
 			this.spawnWitherJockey(w, loc);
 		}
