@@ -9,6 +9,8 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Spider;
+import org.bukkit.entity.WitherSkeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.raid.RaidFinishEvent;
@@ -129,6 +131,21 @@ public class RaidListener implements Listener
 		return;
 	}
 	
+	
+	// spawn a charged creeper within a random distance from the raid center
+	public void spawnWitherJockey(World w, Location loc)
+	{
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		
+		// spawn a wither jockey for kicks
+		Spider spider = (Spider)w.spawnEntity(newLoc, EntityType.SPIDER);
+		WitherSkeleton ws = (WitherSkeleton)w.spawnEntity(newLoc, EntityType.WITHER_SKELETON);
+		spider.addPassenger(ws);
+		ws.setCustomName("Raid Riding Hood");
+		ws.setCustomNameVisible(true);
+		
+		return;
+	}	
 	// spawn a charged creeper within a random distance from the raid center
 	public void spawnGhast(World w, Location loc)
 	{
@@ -180,19 +197,31 @@ public class RaidListener implements Listener
 			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
 			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
 		}		
-		else if (wave > 4) 
+		else if (wave > 5 && wave < 8) 
 		{
 			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
 			this.spawnGhast(w, loc);
-		}		
+			this.spawnWitherJockey(w, loc);
+		}
+		else if (wave > 8)
+		{
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
+			this.spawnWitherJockey(w, loc);
+			this.spawnWitherJockey(w, loc);
+		}
 		else {
 			// wave must be 0
 		}
-		
 		
 		// artillery
 		if (wave == 3 || wave == 6 || wave == 9 || wave > 9)
