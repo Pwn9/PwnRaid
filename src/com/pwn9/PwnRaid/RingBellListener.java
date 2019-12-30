@@ -1,5 +1,6 @@
 package com.pwn9.PwnRaid;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -40,7 +41,7 @@ public class RingBellListener implements Listener
 				
 				// check to see if a PwnRaid is already in progress
 				if (PwnRaid.raidInProgress) {
-					e.getPlayer().sendMessage("PwnRaid: A raid is already in progress, cannot start another");
+					e.getPlayer().sendMessage(ChatColor.RED + "PwnRaid: A raid is already in progress, cannot start another");
 					return;
 				}
 				else {
