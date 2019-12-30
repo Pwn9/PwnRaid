@@ -1,11 +1,14 @@
 package com.pwn9.PwnRaid;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Raid;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Player;
@@ -156,6 +159,15 @@ public class RaidListener implements Listener
 		ghast.setCustomName("Raid-A-Ghast");
 		ghast.setCustomNameVisible(true);
 		
+	    List<Entity> near = ghast.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            ghast.setTarget(nearPlayer);
+	            return;
+	        }
+	    }
+		
 		return;
 	}
 
@@ -163,7 +175,7 @@ public class RaidListener implements Listener
 	public void spawnTnt(World w, Location loc)
 	{
 		Location newLoc = this.getRandomLocNearby(w, loc, 80);
-		newLoc.setY(newLoc.getY() + 30.00);
+		newLoc.setY(newLoc.getY() + 30.0D);
 		// spawn tnt for kicks
 		w.spawnEntity(newLoc, EntityType.PRIMED_TNT); 
 		return;
@@ -199,7 +211,7 @@ public class RaidListener implements Listener
 			this.spawnGhast(w, loc);
 			this.spawnWitherJockey(w, loc);
 		}		
-		else if (wave > 5 && wave < 8) 
+		else if (wave > 4 && wave < 9) 
 		{
 			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
@@ -224,7 +236,7 @@ public class RaidListener implements Listener
 		}
 		
 		// artillery
-		if (wave == 3 || wave == 6 || wave == 9 || wave > 9)
+		if (wave == 3 || wave == 6 || wave > 8)
 		{
 			String msg = "PwnRaid: Raid Captain ~ Enough messing around... call in artillery!!!";
 			plugin.getServer().broadcastMessage(ChatColor.RED + msg);
