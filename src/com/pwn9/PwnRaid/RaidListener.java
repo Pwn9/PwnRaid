@@ -1,5 +1,6 @@
 package com.pwn9.PwnRaid;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Raid;
 import org.bukkit.World;
@@ -44,7 +45,7 @@ public class RaidListener implements Listener
 		
 		// send the message if p is a player with a name
 		if (p != null) {
-			plugin.getServer().broadcastMessage(msg);
+			plugin.getServer().broadcastMessage(ChatColor.RED + msg);
 		}
 
 		return;
@@ -67,6 +68,11 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidFinish(RaidFinishEvent e) 
 	{	
+		
+		String msg = "PwnRaid: The raid has ended with a status of: " + e.getRaid().getStatus().toString();
+		// send the message 
+		plugin.getServer().broadcastMessage(ChatColor.RED + msg);		
+		
 		// cleanup routine
 		this.raidEnded();
 		
@@ -77,6 +83,11 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidStop(RaidStopEvent e) 
 	{	
+		
+		String msg = "PwnRaid: The raid has ended with a status of: " + e.getRaid().getStatus().toString();
+		// send the message 
+		plugin.getServer().broadcastMessage(ChatColor.RED + msg);		
+		
 		// cleanup routine
 		this.raidEnded();
 		
@@ -107,12 +118,12 @@ public class RaidListener implements Listener
 	// spawn a charged creeper within a random distance from the raid center
 	public void spawnSuperCreeper(World w, Location loc)
 	{
-		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		Location newLoc = this.getRandomLocNearby(w, loc, 30);
 		
 		// spawn a charged creeper for kicks
 		Creeper creeper = (Creeper)w.spawnEntity(newLoc, EntityType.CREEPER);
 		creeper.setPowered(true);	
-		creeper.setCustomName("Door Knocker");
+		creeper.setCustomName("Raid Bomber");
 		creeper.setCustomNameVisible(true);
 		
 		return;
@@ -146,7 +157,7 @@ public class RaidListener implements Listener
 	{
 		
 		String wavemsg = "PwnRaid: Round " + wave + " of Pillager raids has begun!";
-		plugin.getServer().broadcastMessage(wavemsg);
+		plugin.getServer().broadcastMessage(ChatColor.RED + wavemsg);
 		
 		if (wave == 1) 
 		{
@@ -184,10 +195,10 @@ public class RaidListener implements Listener
 		
 		
 		// artillery
-		if (wave == 3 || wave == 6 || wave == 9)
+		if (wave == 3 || wave == 6 || wave == 9 || wave > 9)
 		{
 			String msg = "PwnRaid: Raid Captain ~ Enough messing around... call in artillery!!!";
-			plugin.getServer().broadcastMessage(msg);
+			plugin.getServer().broadcastMessage(ChatColor.RED + msg);
 			this.spawnTnt(w, loc);
 			this.spawnTnt(w, loc);
 			this.spawnTnt(w, loc);
