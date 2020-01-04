@@ -1,6 +1,11 @@
 package com.pwn9.PwnRaid;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,6 +42,7 @@ public class RaidListener implements Listener
 		// set raid in progress
 		PwnRaid.raidInProgress = true;
 		PwnRaid.currentWaveNumber = 0;
+		PwnRaid.currentRaidBeginTime = System.currentTimeMillis();
 		
 		// get some infos
 		Player p = e.getPlayer();
@@ -71,13 +77,16 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidFinish(RaidFinishEvent e) 
 	{	
+		String status = e.getRaid().getStatus().toString();
 		
-		String msg = "PwnRaid: The raid has ended with a status of: " + e.getRaid().getStatus().toString();
+		String msg = "PwnRaid: The raid has ended with a status of: " + status;
 		// send the message 
 		plugin.getServer().broadcastMessage(ChatColor.RED + msg);		
 		
+		List<Player> Winners = e.getWinners();
+		
 		// cleanup routine
-		this.raidEnded();
+		this.raidEnded(Winners, status);
 		
 		return;
 	}
@@ -86,13 +95,25 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidStop(RaidStopEvent e) 
 	{	
+		String status = e.getReason().toString();
 		
-		String msg = "PwnRaid: The raid has ended with a status of: " + e.getRaid().getStatus().toString();
+		String msg = "PwnRaid: The raid has stopped because of: " + status;
 		// send the message 
 		plugin.getServer().broadcastMessage(ChatColor.RED + msg);		
 		
+		Set<UUID> Heroes = e.getRaid().getHeroes();
+		
+		List<Player> Players = new ArrayList<Player>();
+		
+		Iterator<UUID> it = Heroes.iterator();
+		while(it.hasNext()){
+			//System.out.println(it.next());
+			Player p = plugin.getServer().getPlayer(it.next());
+			Players.add(p);
+		}
+
 		// cleanup routine
-		this.raidEnded();
+		this.raidEnded(Players, status);
 		
 		return;
 	}
@@ -264,11 +285,23 @@ public class RaidListener implements Listener
 	}
 	
 	// cleanup routine for when a raid ends
-	public void raidEnded() 
+	public void raidEnded(List<Player> Players, String status) 
 	{
 		// raid no longer in progress
 		PwnRaid.raidInProgress = false;
 		PwnRaid.currentWaveNumber = 0;
+		PwnRaid.currentRaidEndTime = System.currentTimeMillis();
+		
+		long millis = PwnRaid.currentRaidEndTime - PwnRaid.currentRaidBeginTime;
+		
+		String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+			    TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+			    TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+		
+		String msg = "PwnRaid: Raid time length was " + hms;
+		// send the message 
+		plugin.getServer().broadcastMessage(ChatColor.RED + msg);	
+		
 	}
 	
 }
