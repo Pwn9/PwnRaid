@@ -1,6 +1,7 @@
 package com.pwn9.PwnRaid;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,10 +21,15 @@ public class BombListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onBomb(ExplosionPrimeEvent e) 
 	{	
+		
 		// get the entity and if its certain type like fireball make it blow bigger
 		if ((e.getEntity().getCustomName() != null) && (e.getEntity().getCustomName() == "Death From Above"))
 		{
-			e.setRadius(e.getRadius() + 3);
+			e.setRadius(e.getRadius() + 2);
+		}
+		else if ((e.getEntityType() == EntityType.FIREBALL) && (PwnRaid.raidInProgress)) {
+			e.setRadius(e.getRadius() + 2);
+			PwnRaid.logToFile("Enhancing Fireball During Raid");
 		}
 	}
 	
@@ -31,16 +37,15 @@ public class BombListener implements Listener
 	public void onLaunch(ProjectileLaunchEvent e) 
 	{	
 		// get the entity and if its certain type like fireball make it blow bigger
-		
+
 		Projectile p = e.getEntity();
 		Entity s = (Entity) p.getShooter();
 		
-		if ((s.getCustomName() != null) && (s.getCustomName() == "Raid-A-Ghast"))
-		{
+		if ((s.getType() == EntityType.GHAST) && (s.getCustomName() != null)) {
+			//PwnRaid.logToFile("Projectile Launch Event From:  " + s.getCustomName());
 			p.setCustomName("Death From Above");
 			p.setCustomNameVisible(true);
-			PwnRaid.logToFile("Raid ghast firing death from above!");
+			//PwnRaid.logToFile("Raid ghast firing death from above!");
 		}
-	
 	}	
 }

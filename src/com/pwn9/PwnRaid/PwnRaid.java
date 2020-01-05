@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -38,7 +37,8 @@ public class PwnRaid extends JavaPlugin
 	// track current raid?
 	public static Raid currentRaidTracker;
 	
-	public static List<String> ravagerBlocks = Arrays.asList("door", "fence", "wall", "gate", "plank", "log", "sign", "chest", "glass");
+	public static String[] ravagerBlocks = new String[] {"DOOR", "FENCE", "WALL", "GATE", "PLANK", "LOG", "SIGN", "CHEST", "GLASS", "BRICK", "COBBLE"};
+	
 	// Other vars
 	public static int currentOmenLevel = 0; 
 	public static Boolean raidInProgress = false;
