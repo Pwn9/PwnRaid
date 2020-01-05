@@ -1,6 +1,5 @@
 package com.pwn9.PwnRaid;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -34,13 +33,13 @@ public class BombListener implements Listener
 		// get the entity and if its certain type like fireball make it blow bigger
 		
 		Projectile p = e.getEntity();
-		Location loc = e.getLocation();
 		Entity s = (Entity) p.getShooter();
 		
 		if ((s.getCustomName() != null) && (s.getCustomName() == "Raid-A-Ghast"))
 		{
 			p.setCustomName("Death From Above");
 			p.setCustomNameVisible(true);
+			PwnRaid.logToFile("Raid ghast firing death from above!");
 		}
 	
 	}	

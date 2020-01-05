@@ -25,10 +25,12 @@ import org.bukkit.event.raid.RaidFinishEvent;
 import org.bukkit.event.raid.RaidSpawnWaveEvent;
 import org.bukkit.event.raid.RaidStopEvent;
 import org.bukkit.event.raid.RaidTriggerEvent;
+import org.bukkit.scheduler.BukkitTask;
 
 public class RaidListener implements Listener 
 {
 	private final PwnRaid plugin;
+	private BukkitTask raidTask;
 	
 	public RaidListener(PwnRaid plugin)
 	{
@@ -39,6 +41,20 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidStart(RaidTriggerEvent e) 
 	{	
+		//TODO: get rid of this eventually, but for now we only allow 1 raid at a time on the server
+		if (PwnRaid.raidInProgress)
+		{
+			e.setCancelled(true);
+			return;
+		}
+		
+		
+		// Add this raid to the current raids
+		//TODO: PwnRaid.currentRaids.add(e.getRaid());
+		
+		// with this we can always get the current raid now without passing it between classes, maybe this should be it's own class eventually like PwnRaidRaidClass
+		PwnRaid.currentRaidTracker = e.getRaid();
+		
 		// set raid in progress
 		PwnRaid.raidInProgress = true;
 		PwnRaid.currentWaveNumber = 0;
@@ -50,13 +66,18 @@ public class RaidListener implements Listener
 		
 		// set the bad omen level based on the item used to ring the bell and message the server
 		r.setBadOmenLevel(PwnRaid.currentOmenLevel);	
-		String msg = "PwnRaid: " + p.getDisplayName() + " has triggered a level " + r.getBadOmenLevel() + " raid!";
+		String msg = p.getDisplayName() + " has triggered a level " + r.getBadOmenLevel() + " raid!";
 		
 		// send the message if p is a player with a name
 		if (p != null) {
-			plugin.getServer().broadcastMessage(ChatColor.RED + msg);
+			plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);
 		}
 
+		// create a timer that listens to this raid
+		BukkitTask task = new TimerTask(r).runTaskTimer(this.plugin, 10, 20);
+			
+		this.raidTask = task;
+		
 		return;
 	}
 	
@@ -77,11 +98,13 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidFinish(RaidFinishEvent e) 
 	{	
+		//TODO: remove raid from list of raids
+		
 		String status = e.getRaid().getStatus().toString();
 		
-		String msg = "PwnRaid: The raid has ended with a status of: " + status;
+		String msg = "The raid has ended with a status of: " + status;
 		// send the message 
-		plugin.getServer().broadcastMessage(ChatColor.RED + msg);		
+		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);		
 		
 		List<Player> Winners = e.getWinners();
 		
@@ -95,11 +118,13 @@ public class RaidListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onRaidStop(RaidStopEvent e) 
 	{	
+		//TODO: remove raid from list of raids
+		
 		String status = e.getReason().toString();
 		
-		String msg = "PwnRaid: The raid has stopped because of: " + status;
+		String msg = "The raid has stopped because of: " + status;
 		// send the message 
-		plugin.getServer().broadcastMessage(ChatColor.RED + msg);		
+		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);		
 		
 		Set<UUID> Heroes = e.getRaid().getHeroes();
 		
@@ -225,8 +250,8 @@ public class RaidListener implements Listener
 	public void spawnWaveExtraMobs(World w, Location loc, int wave)
 	{
 		
-		String wavemsg = "PwnRaid: Round " + wave + " of Pillager raids has begun!";
-		plugin.getServer().broadcastMessage(ChatColor.RED + wavemsg);
+		String wavemsg = "Round " + wave + " of Pillager raids has begun!";
+		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + wavemsg);
 		
 		if (wave == 1) 
 		{
@@ -272,8 +297,8 @@ public class RaidListener implements Listener
 		// artillery
 		if (wave == 3 || wave == 6 || wave > 8)
 		{
-			String msg = "PwnRaid: Raid Captain ~ Enough messing around... call in artillery!!!";
-			plugin.getServer().broadcastMessage(ChatColor.RED + msg);
+			String msg = "Raid Captain ~ Enough messing around... call in artillery!!!";
+			plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);
 			this.spawnTnt(w, loc);
 			this.spawnTnt(w, loc);
 			this.spawnTnt(w, loc);
@@ -287,7 +312,11 @@ public class RaidListener implements Listener
 	// cleanup routine for when a raid ends
 	public void raidEnded(List<Player> Players, String status) 
 	{
+		// cancel the listener timer
+		this.raidTask.cancel();
+		
 		// raid no longer in progress
+		PwnRaid.currentRaidTracker = null;
 		PwnRaid.raidInProgress = false;
 		PwnRaid.currentWaveNumber = 0;
 		PwnRaid.currentRaidEndTime = System.currentTimeMillis();
@@ -298,9 +327,9 @@ public class RaidListener implements Listener
 			    TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
 			    TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
 		
-		String msg = "PwnRaid: Raid time length was " + hms;
+		String msg = "Raid time length was " + hms;
 		// send the message 
-		plugin.getServer().broadcastMessage(ChatColor.RED + msg);	
+		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);	
 		
 	}
 	

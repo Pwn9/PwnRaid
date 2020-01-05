@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Raid;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,12 +32,20 @@ public class PwnRaid extends JavaPlugin
 	public static List<String> enabledWorlds;
 	public static Boolean logEnabled;
 	
+	// Tracking Raids - there can be more than one (for now we are actually blocking that from happening)
+	//TODO: public static List<Raid> currentRaids;
+	
+	// track current raid?
+	public static Raid currentRaidTracker;
+	
+	public static List<String> ravagerBlocks = Arrays.asList("door", "fence", "wall", "gate", "plank", "log", "sign", "chest", "glass");
 	// Other vars
 	public static int currentOmenLevel = 0; 
 	public static Boolean raidInProgress = false;
 	public static int currentWaveNumber = 0;
 	public static long currentRaidBeginTime;
 	public static long currentRaidEndTime;
+	
 	
 	static Random randomNumberGenerator = new Random();
 	public static PluginDescriptionFile pdfFile;
@@ -50,6 +60,7 @@ public class PwnRaid extends JavaPlugin
     	// Init Listener
     	new RingBellListener(this);
     	new RaidListener(this);
+    	new BombListener(this);
     	
     	// Get Data Folder
     	PwnRaid.dataFolder = getDataFolder();
