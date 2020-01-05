@@ -46,7 +46,7 @@ public class TimerTask extends BukkitRunnable
 						b.breakNaturally();
 						
 						PwnRaid.logToFile("Ravager broke " + b.getType().toString());
-						return;
+						break;
 					}
 				}
 			}	
