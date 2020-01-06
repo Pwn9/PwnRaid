@@ -74,10 +74,8 @@ public class RaidListener implements Listener
 		}
 
 		// create a timer that listens to this raid
-		BukkitTask task = new TimerTask(r).runTaskTimer(this.plugin, 10, 10);
-			
-		PwnRaid.logToFile("Ravager Blocks Length: " + PwnRaid.ravagerBlocks.length);
-				
+		//TODO: in the future to handle multiple raids this will have to be per instance of raid
+		BukkitTask task = new TimerTask(r).runTaskTimer(this.plugin, 10, 10);	
 		this.raidTask = task;
 		
 		return;
@@ -315,27 +313,33 @@ public class RaidListener implements Listener
 	public void raidEnded(List<Player> Players, String status) 
 	{
 		// raidEnded can be called twice so don't run again if it's run already
-		//if (PwnRaid.raidInProgress)
-		//{
-			// cancel the listener timer
-			if (this.raidTask != null) this.raidTask.cancel();
-			
-			// raid no longer in progress
-			PwnRaid.currentRaidTracker = null;
-			PwnRaid.raidInProgress = false;
-			PwnRaid.currentWaveNumber = 0;
-			PwnRaid.currentRaidEndTime = System.currentTimeMillis();
-			
-			long millis = PwnRaid.currentRaidEndTime - PwnRaid.currentRaidBeginTime;
-			
-			String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-				    TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
-				    TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
-			
-			String msg = "Raid time length was " + hms;
-			// send the message 
-			plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);	
-		//}
+		if (!PwnRaid.raidInProgress) return;
+		
+		if (PwnRaid.logEnabled)
+		{	
+			PwnRaid.logToFile("Raid is ending, doing cleanup");
+		}
+		
+		// cancel the listener timer
+		if (this.raidTask != null) this.raidTask.cancel();
+		
+		// raid no longer in progress
+		PwnRaid.currentRaidTracker = null;
+		PwnRaid.raidInProgress = false;
+		PwnRaid.currentWaveNumber = 0;
+		PwnRaid.currentRaidEndTime = System.currentTimeMillis();
+		
+		long millis = PwnRaid.currentRaidEndTime - PwnRaid.currentRaidBeginTime;
+		
+		String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+			    TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+			    TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+		
+		String msg = "Raid time length was " + hms;
+		// send the message 
+		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);	
+
+		return;
 	}
 	
 }

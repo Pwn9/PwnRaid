@@ -52,7 +52,10 @@ public class RingBellListener implements Listener
 					// Apply bad omen and trigger the raid!
 					this.doBadOmen(e.getPlayer(), l);
 					
-					PwnRaid.logToFile("Checking item trigger for " + e.getItem().getType().toString() + ": value = " + l);
+					if (PwnRaid.logEnabled)
+					{
+						PwnRaid.logToFile("Checking item trigger for " + e.getItem().getType().toString() + ": value = " + l);
+					}
 				}
 				
 			}

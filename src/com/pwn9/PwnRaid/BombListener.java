@@ -21,7 +21,6 @@ public class BombListener implements Listener
 	@EventHandler(ignoreCancelled = false)
 	public void onBomb(ExplosionPrimeEvent e) 
 	{	
-		
 		// get the entity and if its certain type like fireball make it blow bigger
 		if ((e.getEntity().getCustomName() != null) && (e.getEntity().getCustomName() == "Death From Above"))
 		{
@@ -29,7 +28,10 @@ public class BombListener implements Listener
 		}
 		else if ((e.getEntityType() == EntityType.FIREBALL) && (PwnRaid.raidInProgress)) {
 			e.setRadius(e.getRadius() + 2);
-			PwnRaid.logToFile("Enhancing Fireball During Raid");
+			if (PwnRaid.logEnabled)
+			{
+				PwnRaid.logToFile("Enhancing Fireball During Raid");				
+			}
 		}
 	}
 	
@@ -37,15 +39,12 @@ public class BombListener implements Listener
 	public void onLaunch(ProjectileLaunchEvent e) 
 	{	
 		// get the entity and if its certain type like fireball make it blow bigger
-
 		Projectile p = e.getEntity();
 		Entity s = (Entity) p.getShooter();
 		
 		if ((s.getType() == EntityType.GHAST) && (s.getCustomName() != null)) {
-			//PwnRaid.logToFile("Projectile Launch Event From:  " + s.getCustomName());
 			p.setCustomName("Death From Above");
 			p.setCustomNameVisible(true);
-			//PwnRaid.logToFile("Raid ghast firing death from above!");
 		}
 	}	
 }

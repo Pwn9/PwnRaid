@@ -37,7 +37,7 @@ public class PwnRaid extends JavaPlugin
 	// track current raid?
 	public static Raid currentRaidTracker;
 	
-	public static String[] ravagerBlocks = new String[] {"DOOR", "FENCE", "WALL", "GATE", "PLANK", "LOG", "SIGN", "CHEST", "GLASS", "BRICK", "COBBLE"};
+	public static String[] ravagerBlocks = new String[] {"DOOR", "FENCE", "WALL", "GATE", "PLANK", "LOG", "SIGN", "CHEST", "GLASS", "BRICK", "COBBLE", "SAND", "DIRT", "GRASS", "CROP", "MELON", "GRANITE", "DIORITE", "ANDESTITE", "PURPUR", "WOOL"};
 	
 	// Other vars
 	public static int currentOmenLevel = 0; 
