@@ -43,12 +43,17 @@ public class TimerTask extends BukkitRunnable
 			if (et == EntityType.RAVAGER) 
 			{
 				
-	            Block[] blocks = new Block[3];
+	            Block[] blocks = new Block[8];
 
 	            blocks[0] = this.getBreakableTargetBlock(r);
 	            blocks[1] = blocks[0].getRelative(BlockFace.DOWN);
 	            blocks[2] = blocks[0].getRelative(BlockFace.UP);
-
+	            blocks[3] = blocks[2].getRelative(BlockFace.UP);
+	            blocks[4] = blocks[0].getRelative(BlockFace.NORTH);
+	            blocks[5] = blocks[0].getRelative(BlockFace.SOUTH);
+	            blocks[6] = blocks[0].getRelative(BlockFace.EAST);
+	            blocks[7] = blocks[0].getRelative(BlockFace.WEST);
+	            
 	            for (Block block : blocks) {
 	                this.attemptBreakBlock(r, block);
 	            }  
@@ -126,7 +131,7 @@ public class TimerTask extends BukkitRunnable
         Block ret = r.getWorld().getBlockAt((int) Math.floor(r.getLocation().getBlockX() + bdx), (int) Math.floor(r.getLocation().getBlockY() + 1), (int) Math.floor(r.getLocation().getBlockZ() + bdz));
         
         if (PwnRaid.logEnabled) {
-        	PwnRaid.logToFile("Block to break: " + ret.getLocation().toString() + " Ravager at: " + r.getEyeLocation().toString());
+        	//PwnRaid.logToFile("Block to break: " + ret.getLocation().toString() + " Ravager at: " + r.getEyeLocation().toString());
         }
         
         return ret;
