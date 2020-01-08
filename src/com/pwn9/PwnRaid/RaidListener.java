@@ -246,7 +246,8 @@ public class RaidListener implements Listener
 		return;
 	}	
 	
-	//todo: a routine that will spawn a set of extra mobs each wave for extra fun
+	//TODO: a routine that will spawn a set of extra mobs each wave for extra fun
+	//NOTE: there are a max of 8 raids in hard mode with a raid level 1 or greater
 	public void spawnWaveExtraMobs(World w, Location loc, int wave)
 	{
 		
@@ -280,7 +281,7 @@ public class RaidListener implements Listener
 			this.spawnGhast(w, loc);
 			this.spawnWitherJockey(w, loc);
 		}
-		else if (wave > 8)
+		else if (wave >= 8)
 		{
 			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
@@ -295,7 +296,7 @@ public class RaidListener implements Listener
 		}
 		
 		// artillery
-		if (wave == 3 || wave == 6 || wave > 8)
+		if (wave == 3 || wave == 6 || wave >= 8)
 		{
 			String msg = "Raid Captain ~ Enough messing around... call in artillery!!!";
 			plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);
