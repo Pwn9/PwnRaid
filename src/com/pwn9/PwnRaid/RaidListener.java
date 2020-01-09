@@ -16,7 +16,9 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;
+import org.bukkit.entity.Illusioner;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Spider;
 import org.bukkit.entity.WitherSkeleton;
 import org.bukkit.event.EventHandler;
@@ -162,12 +164,55 @@ public class RaidListener implements Listener
 		
 		return newLoc;
 	}
+
 	
+	// spawn a killer rabbit within a random distance from the raid center
+	public void spawnRabbit(World w, Location loc)
+	{
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		
+		// spawn a charged creeper for kicks
+		Rabbit ill = (Rabbit)w.spawnEntity(newLoc, EntityType.RABBIT);	
+		Rabbit.Type r = Rabbit.Type.valueOf("THE_KILLER_BUNNY");
+		ill.setRabbitType(r);
+	    List<Entity> near = ill.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            ill.setTarget(nearPlayer);
+	            return;
+	        }
+	    }		
+		
+		return;
+	}
+	
+	// spawn an illusioner within a random distance from the raid center
+	public void spawnIllusioner(World w, Location loc)
+	{
+		Location newLoc = this.getRandomLocNearby(w, loc, 50);
+		
+		// spawn a charged creeper for kicks
+		Illusioner ill = (Illusioner)w.spawnEntity(newLoc, EntityType.ILLUSIONER);	
+		ill.setCustomName("David Blaine");
+		ill.setCustomNameVisible(true);
+		
+	    List<Entity> near = ill.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            ill.setTarget(nearPlayer);
+	            return;
+	        }
+	    }		
+		
+		return;
+	}
 	
 	// spawn a charged creeper within a random distance from the raid center
 	public void spawnSuperCreeper(World w, Location loc)
 	{
-		Location newLoc = this.getRandomLocNearby(w, loc, 30);
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
 		
 		// spawn a charged creeper for kicks
 		Creeper creeper = (Creeper)w.spawnEntity(newLoc, EntityType.CREEPER);
@@ -186,7 +231,6 @@ public class RaidListener implements Listener
 		
 		return;
 	}
-	
 	
 	// spawn a witherjockey random distance from the raid center
 	public void spawnWitherJockey(World w, Location loc)
@@ -212,10 +256,11 @@ public class RaidListener implements Listener
 	    
 		return;
 	}	
+	
 	// spawn a ghast within a random distance from the raid center
 	public void spawnGhast(World w, Location loc)
 	{
-		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		Location newLoc = this.getRandomLocNearby(w, loc, 50);
 		newLoc.setY(newLoc.getY() + 20.0D);
 		
 		// spawn a ghast for kicks
@@ -239,7 +284,7 @@ public class RaidListener implements Listener
 	// spawn primed tnt
 	public void spawnTnt(World w, Location loc)
 	{
-		Location newLoc = this.getRandomLocNearby(w, loc, 80);
+		Location newLoc = this.getRandomLocNearby(w, loc, 60);
 		newLoc.setY(newLoc.getY() + 30.0D);
 		// spawn tnt for kicks
 		w.spawnEntity(newLoc, EntityType.PRIMED_TNT); 
@@ -261,6 +306,9 @@ public class RaidListener implements Listener
 		else if (wave == 2)
 		{
 			this.spawnGhast(w, loc);
+			if (PwnRaid.currentOmenLevel > 3) {
+				this.spawnRabbit(w, loc);
+			}			
 		}
 		else if (wave == 3) 
 		{
@@ -272,14 +320,38 @@ public class RaidListener implements Listener
 			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
 			this.spawnWitherJockey(w, loc);
+			if (PwnRaid.currentOmenLevel > 3) {
+				this.spawnRabbit(w, loc);
+			}			
 		}		
-		else if (wave > 4 && wave < 9) 
+		else if (wave == 5) 
 		{
 			this.spawnSuperCreeper(w, loc);
 			this.spawnSuperCreeper(w, loc);
 			this.spawnGhast(w, loc);
 			this.spawnGhast(w, loc);
 			this.spawnWitherJockey(w, loc);
+		}
+		else if (wave == 6) 
+		{
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
+			if (PwnRaid.currentOmenLevel > 3) {
+				this.spawnRabbit(w, loc);
+				this.spawnRabbit(w, loc);
+			}
+		}		
+		else if (wave == 7) 
+		{
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
+			this.spawnIllusioner(w, loc);
 		}
 		else if (wave >= 8)
 		{
@@ -290,6 +362,12 @@ public class RaidListener implements Listener
 			this.spawnGhast(w, loc);
 			this.spawnWitherJockey(w, loc);
 			this.spawnWitherJockey(w, loc);
+			if (PwnRaid.currentOmenLevel > 3) {
+				this.spawnRabbit(w, loc);
+				this.spawnRabbit(w, loc);
+				this.spawnRabbit(w, loc);
+				this.spawnRabbit(w, loc);
+			}
 		}
 		else {
 			// wave must be 0
