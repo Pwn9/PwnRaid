@@ -295,6 +295,8 @@ public class RaidListener implements Listener
 	//NOTE: there are a max of 8 raids in hard mode with a raid level 1 or greater
 	public void spawnWaveExtraMobs(World w, Location loc, int wave)
 	{
+		//TODO: how many players in the raid (amplify raid when more people)
+		int p = PwnRaid.currentRaidTracker.getHeroes().size();
 		
 		String wavemsg = "Round " + wave + " of Pillager raids has begun!";
 		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + wavemsg);
