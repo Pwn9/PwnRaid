@@ -169,8 +169,7 @@ public class RaidListener implements Listener
 	// spawn a killer rabbit within a random distance from the raid center
 	public void spawnRabbit(World w, Location loc, int i) {
 
-		for (int c = 0; c < i; c++) {
-		
+		//for (int c = 0; c < i; c++) {
 			Location newLoc = this.getRandomLocNearby(w, loc, 40);
 			
 			// spawn a charged creeper for kicks
@@ -185,17 +184,14 @@ public class RaidListener implements Listener
 		            return;
 		        }
 		    }		
-		
-		}
-	
+		//}
 		return;
 	}
 	
 	// spawn an illusioner within a random distance from the raid center
 	public void spawnIllusioner(World w, Location loc, int i)
 	{
-		for (int c = 0; c < i; c++) {
-			
+		//for (int c = 0; c < i; c++) {
 			Location newLoc = this.getRandomLocNearby(w, loc, 50);
 			
 			// spawn a charged creeper for kicks
@@ -211,14 +207,14 @@ public class RaidListener implements Listener
 		            return;
 		        }
 		    }		
-		}
+		//}
 		return;
 	}
 	
 	// spawn a charged creeper within a random distance from the raid center
 	public void spawnSuperCreeper(World w, Location loc, int i)
 	{
-		for (int c = 0; c < i; c++) {
+		//for (int c = 0; c < i; c++) {
 			Location newLoc = this.getRandomLocNearby(w, loc, 40);
 			
 			// spawn a charged creeper for kicks
@@ -235,14 +231,14 @@ public class RaidListener implements Listener
 		            return;
 		        }
 		    }		
-		}
+		//}
 		return;
 	}
 	
 	// spawn a witherjockey random distance from the raid center
 	public void spawnWitherJockey(World w, Location loc, int i)
 	{
-		for (int c = 0; c < i; c++) {
+		//for (int c = 0; c < i; c++) {
 			Location newLoc = this.getRandomLocNearby(w, loc, 40);
 			
 			// spawn a wither jockey for kicks
@@ -261,14 +257,14 @@ public class RaidListener implements Listener
 		            return;
 		        }
 		    }
-		}
+		//}
 		return;
 	}	
 	
 	// spawn a ghast within a random distance from the raid center
 	public void spawnGhast(World w, Location loc, int i)
 	{
-		for (int c = 0; c < i; c++) {
+		//for (int c = 0; c < i; c++) {
 			Location newLoc = this.getRandomLocNearby(w, loc, 50);
 			newLoc.setY(newLoc.getY() + 20.0D);
 			
@@ -286,7 +282,7 @@ public class RaidListener implements Listener
 		            return;
 		        }
 		    }
-		}
+		//}
 		return;
 	}
 
@@ -322,9 +318,9 @@ public class RaidListener implements Listener
 		else if (wave == 2)
 		{
 			this.spawnGhast(w, loc, 1);
-			if (PwnRaid.currentOmenLevel > 3) {
+			//if (PwnRaid.currentOmenLevel > 3) {
 				this.spawnRabbit(w, loc, 1);
-			}			
+			//}			
 		}
 		else if (wave == 3) 
 		{
@@ -337,13 +333,16 @@ public class RaidListener implements Listener
 			this.spawnSuperCreeper(w, loc, 1);
 			this.spawnGhast(w, loc, 1);
 			this.spawnWitherJockey(w, loc, 1);
-			if (PwnRaid.currentOmenLevel > 3) {
+			//if (PwnRaid.currentOmenLevel > 3) {
 				this.spawnRabbit(w, loc, 2);
-			}			
+				this.spawnRabbit(w, loc, 2);
+			//}			
 		}		
 		else if (wave == 5) 
 		{
 			this.spawnSuperCreeper(w, loc, 2);
+			this.spawnSuperCreeper(w, loc, 2);
+			this.spawnGhast(w, loc, 2);
 			this.spawnGhast(w, loc, 2);
 			this.spawnWitherJockey(w, loc, 1);
 			this.spawnIllusioner(w, loc, 1);
@@ -351,15 +350,21 @@ public class RaidListener implements Listener
 		else if (wave == 6) 
 		{
 			this.spawnSuperCreeper(w, loc, 2);
+			this.spawnSuperCreeper(w, loc, 2);
+			this.spawnGhast(w, loc, 2);
 			this.spawnGhast(w, loc, 2);
 			this.spawnWitherJockey(w, loc, 1);
-			if (PwnRaid.currentOmenLevel > 3) {
+			//if (PwnRaid.currentOmenLevel > 3) {
 				this.spawnRabbit(w, loc, 3);
-			}
+				this.spawnRabbit(w, loc, 3);
+				this.spawnRabbit(w, loc, 3);
+			//}
 		}		
 		else if (wave == 7) 
 		{
 			this.spawnSuperCreeper(w, loc, 2);
+			this.spawnSuperCreeper(w, loc, 2);
+			this.spawnGhast(w, loc, 2);
 			this.spawnGhast(w, loc, 2);
 			this.spawnWitherJockey(w, loc, 1);
 			this.spawnIllusioner(w, loc, 1);
@@ -367,11 +372,18 @@ public class RaidListener implements Listener
 		else if (wave >= 8)
 		{
 			this.spawnSuperCreeper(w, loc, 3);
+			this.spawnSuperCreeper(w, loc, 3);
+			this.spawnSuperCreeper(w, loc, 3);
+			this.spawnGhast(w, loc, 2);
 			this.spawnGhast(w, loc, 2);
 			this.spawnWitherJockey(w, loc, 2);
-			if (PwnRaid.currentOmenLevel > 3) {
+			this.spawnWitherJockey(w, loc, 2);
+			//if (PwnRaid.currentOmenLevel > 3) {
 				this.spawnRabbit(w, loc, 4);
-			}
+				this.spawnRabbit(w, loc, 4);
+				this.spawnRabbit(w, loc, 4);
+				this.spawnRabbit(w, loc, 4);
+			//}
 		}
 		else {
 			// wave must be 0
