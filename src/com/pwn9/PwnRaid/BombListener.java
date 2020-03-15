@@ -2,6 +2,7 @@ package com.pwn9.PwnRaid;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,12 +40,20 @@ public class BombListener implements Listener
 	public void onLaunch(ProjectileLaunchEvent e) 
 	{	
 		// get the entity and if its certain type like fireball make it blow bigger
-		Projectile p = e.getEntity();
-		Entity s = (Entity) p.getShooter();
+		if (e.getEntity() == null) return;	
 		
-		if ((s.getType() == EntityType.GHAST) && (s.getCustomName() != null)) {
-			p.setCustomName("Death From Above");
-			p.setCustomNameVisible(true);
+		Projectile p = e.getEntity();
+		
+		if (p.getShooter() == null) return;
+		
+		// Make sure ghast
+		if (p.getShooter() instanceof Ghast) {
+			Entity s = (Entity) p.getShooter();
+			
+			if ((s.getType() == EntityType.GHAST) && (s.getCustomName() != null)) {
+				p.setCustomName("Death From Above");
+				p.setCustomNameVisible(true);
+			}
 		}
 	}	
 }
