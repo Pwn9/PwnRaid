@@ -27,6 +27,7 @@ import org.bukkit.event.raid.RaidFinishEvent;
 import org.bukkit.event.raid.RaidSpawnWaveEvent;
 import org.bukkit.event.raid.RaidStopEvent;
 import org.bukkit.event.raid.RaidTriggerEvent;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
 public class RaidListener implements Listener 
@@ -90,9 +91,7 @@ public class RaidListener implements Listener
 		// get some infos
 		World w = e.getWorld();
 		Location loc = e.getRaid().getLocation();
-		
-		this.spawnWaveExtraMobs(w, loc, PwnRaid.currentWaveNumber);
-		
+     	this.spawnWaveExtraMobs(w, loc, PwnRaid.currentWaveNumber);
 		return;
 	}
 		
@@ -167,134 +166,130 @@ public class RaidListener implements Listener
 
 	
 	// spawn a killer rabbit within a random distance from the raid center
-	public void spawnRabbit(World w, Location loc, int i) {
-
-		//for (int c = 0; c < i; c++) {
-			Location newLoc = this.getRandomLocNearby(w, loc, 40);
-			
-			// spawn a charged creeper for kicks
-			Rabbit rab = (Rabbit)w.spawnEntity(newLoc, EntityType.RABBIT);	
-			Rabbit.Type r = Rabbit.Type.valueOf("THE_KILLER_BUNNY");
-			rab.setRabbitType(r);
-		    List<Entity> near = rab.getNearbyEntities(50.0D, 50.0D, 50.0D);
-		    for(Entity entity : near) {
-		        if(entity instanceof Player) {
-		            Player nearPlayer = (Player) entity;
-		            rab.setTarget(nearPlayer);
-		            return;
-		        }
-		    }		
-		//}
+	public void spawnRabbit(World w, Location loc) 
+	{
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		
+		// spawn a KILLER RABBIT
+		Rabbit rab = (Rabbit)w.spawnEntity(newLoc, EntityType.RABBIT);	
+		Rabbit.Type r = Rabbit.Type.valueOf("KILLER_BUNNY");
+		rab.setRabbitType(r);
+	    List<Entity> near = rab.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            rab.setTarget(nearPlayer);
+	            return;
+	        }
+	    }		
 		return;
 	}
 	
 	// spawn an illusioner within a random distance from the raid center
-	public void spawnIllusioner(World w, Location loc, int i)
+	public void spawnIllusioner(World w, Location loc)
 	{
-		//for (int c = 0; c < i; c++) {
-			Location newLoc = this.getRandomLocNearby(w, loc, 50);
-			
-			// spawn a charged creeper for kicks
-			Illusioner ill = (Illusioner)w.spawnEntity(newLoc, EntityType.ILLUSIONER);	
-			ill.setCustomName("David Blaine");
-			ill.setCustomNameVisible(true);
-			
-		    List<Entity> near = ill.getNearbyEntities(50.0D, 50.0D, 50.0D);
-		    for(Entity entity : near) {
-		        if(entity instanceof Player) {
-		            Player nearPlayer = (Player) entity;
-		            ill.setTarget(nearPlayer);
-		            return;
-		        }
-		    }		
-		//}
+		Location newLoc = this.getRandomLocNearby(w, loc, 50);
+		
+		// spawn DAVID BLAINE
+		Illusioner ill = (Illusioner)w.spawnEntity(newLoc, EntityType.ILLUSIONER);	
+		ill.setCustomName("David Blaine");
+		ill.setCustomNameVisible(true);
+		
+	    List<Entity> near = ill.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            ill.setTarget(nearPlayer);
+	            return;
+	        }
+	    }		
 		return;
 	}
 	
 	// spawn a charged creeper within a random distance from the raid center
-	public void spawnSuperCreeper(World w, Location loc, int i)
+	public void spawnSuperCreeper(World w, Location loc)
 	{
-		//for (int c = 0; c < i; c++) {
-			Location newLoc = this.getRandomLocNearby(w, loc, 40);
-			
-			// spawn a charged creeper for kicks
-			Creeper creeper = (Creeper)w.spawnEntity(newLoc, EntityType.CREEPER);
-			creeper.setPowered(true);	
-			creeper.setCustomName("Raid Bomber");
-			creeper.setCustomNameVisible(true);
-			
-		    List<Entity> near = creeper.getNearbyEntities(50.0D, 50.0D, 50.0D);
-		    for(Entity entity : near) {
-		        if(entity instanceof Player) {
-		            Player nearPlayer = (Player) entity;
-		            creeper.setTarget(nearPlayer);
-		            return;
-		        }
-		    }		
-		//}
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		
+		// spawn a charged creeper for kicks
+		Creeper creeper = (Creeper)w.spawnEntity(newLoc, EntityType.CREEPER);
+		creeper.setPowered(true);	
+		creeper.setCustomName("Raid Bomber");
+		creeper.setCustomNameVisible(true);
+		
+	    List<Entity> near = creeper.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            creeper.setTarget(nearPlayer);
+	            return;
+	        }
+	    }		
 		return;
 	}
 	
 	// spawn a witherjockey random distance from the raid center
-	public void spawnWitherJockey(World w, Location loc, int i)
+	public void spawnWitherJockey(World w, Location loc)
 	{
-		//for (int c = 0; c < i; c++) {
-			Location newLoc = this.getRandomLocNearby(w, loc, 40);
-			
-			// spawn a wither jockey for kicks
-			Spider spider = (Spider)w.spawnEntity(newLoc, EntityType.SPIDER);
-			WitherSkeleton ws = (WitherSkeleton)w.spawnEntity(newLoc, EntityType.WITHER_SKELETON);
-			spider.addPassenger(ws);
-			ws.setCustomName("Raid Riding Hood");
-			ws.setCustomNameVisible(true);
-			
-			// target someone
-		    List<Entity> near = ws.getNearbyEntities(50.0D, 50.0D, 50.0D);
-		    for(Entity entity : near) {
-		        if(entity instanceof Player) {
-		            Player nearPlayer = (Player) entity;
-		            ws.setTarget(nearPlayer);
-		            return;
-		        }
-		    }
-		//}
+		Location newLoc = this.getRandomLocNearby(w, loc, 40);
+		
+		// spawn a wither jockey for kicks
+		Spider spider = (Spider)w.spawnEntity(newLoc, EntityType.SPIDER);
+		WitherSkeleton ws = (WitherSkeleton)w.spawnEntity(newLoc, EntityType.WITHER_SKELETON);
+		spider.addPassenger(ws);
+		ws.setCustomName("Raid Riding Hood");
+		ws.setCustomNameVisible(true);
+		
+		// target someone
+	    List<Entity> near = ws.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            ws.setTarget(nearPlayer);
+	            return;
+	        }
+	    }
 		return;
 	}	
 	
 	// spawn a ghast within a random distance from the raid center
-	public void spawnGhast(World w, Location loc, int i)
+	public void spawnGhast(World w, Location loc)
 	{
-		//for (int c = 0; c < i; c++) {
-			Location newLoc = this.getRandomLocNearby(w, loc, 50);
-			newLoc.setY(newLoc.getY() + 20.0D);
-			
-			// spawn a ghast for kicks
-			Ghast ghast = (Ghast)w.spawnEntity(newLoc, EntityType.GHAST);	
-			ghast.setCustomName("Raid-A-Ghast");
-			ghast.setCustomNameVisible(true);
-			
-			// target someone
-		    List<Entity> near = ghast.getNearbyEntities(50.0D, 50.0D, 50.0D);
-		    for(Entity entity : near) {
-		        if(entity instanceof Player) {
-		            Player nearPlayer = (Player) entity;
-		            ghast.setTarget(nearPlayer);
-		            return;
-		        }
-		    }
-		//}
+		Location newLoc = this.getRandomLocNearby(w, loc, 50);
+		newLoc.setY(newLoc.getY() + 20.0D);
+		
+		// spawn a ghast for kicks
+		Ghast ghast = (Ghast)w.spawnEntity(newLoc, EntityType.GHAST);	
+		ghast.setCustomName("Raid-A-Ghast");
+		ghast.setCustomNameVisible(true);
+		
+		// target someone
+	    List<Entity> near = ghast.getNearbyEntities(50.0D, 50.0D, 50.0D);
+	    for(Entity entity : near) {
+	        if(entity instanceof Player) {
+	            Player nearPlayer = (Player) entity;
+	            ghast.setTarget(nearPlayer);
+	            return;
+	        }
+	    }
 		return;
 	}
 
 	// spawn primed tnt
-	public void spawnTnt(World w, Location loc, int i)
+	public void spawnTnt(World w, Location loc, long delay)
 	{
-		for (int c = 0; c < i; c++) {
-			Location newLoc = this.getRandomLocNearby(w, loc, 60);
-			newLoc.setY(newLoc.getY() + 30.0D);
-			// spawn tnt for kicks
-			w.spawnEntity(newLoc, EntityType.PRIMED_TNT); 
-		}
+		Location newLoc = this.getRandomLocNearby(w, loc, 60);
+		newLoc.setY(newLoc.getY() + 30.0D);
+		
+		// spawn tnt for kicks
+        BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+            	w.spawnEntity(newLoc, EntityType.PRIMED_TNT); 
+            }
+        }, delay);
+        
 		return;
 	}	
 	
@@ -303,9 +298,9 @@ public class RaidListener implements Listener
 	public void spawnWaveExtraMobs(World w, Location loc, int wave)
 	{
 		//TODO: how many players in the raid (amplify raid when more people)
-		int p = PwnRaid.currentRaidTracker.getHeroes().size();
+		//int p = PwnRaid.currentRaidTracker.getHeroes().size();
 		//TODO: multiplier is players times the current wave.
-		int x = (wave * p);
+		//int x = (wave * p);
 		
 		String wavemsg = "Round " + wave + " of Pillager raids has begun!";
 		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + wavemsg);
@@ -313,77 +308,57 @@ public class RaidListener implements Listener
 		
 		if (wave == 1) 
 		{
-			this.spawnSuperCreeper(w, loc, 1);
+			this.spawnSuperCreeper(w, loc);
 		}
 		else if (wave == 2)
 		{
-			this.spawnGhast(w, loc, 1);
-			//if (PwnRaid.currentOmenLevel > 3) {
-				this.spawnRabbit(w, loc, 1);
-			//}			
+			this.spawnGhast(w, loc);		
 		}
 		else if (wave == 3) 
 		{
-			this.spawnSuperCreeper(w, loc, 1);
-			this.spawnGhast(w, loc, 1);
-			this.spawnIllusioner(w, loc, 1);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
 		}
 		else if (wave == 4) 
 		{
-			this.spawnSuperCreeper(w, loc, 1);
-			this.spawnGhast(w, loc, 1);
-			this.spawnWitherJockey(w, loc, 1);
-			//if (PwnRaid.currentOmenLevel > 3) {
-				this.spawnRabbit(w, loc, 2);
-				this.spawnRabbit(w, loc, 2);
-			//}			
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
 		}		
 		else if (wave == 5) 
 		{
-			this.spawnSuperCreeper(w, loc, 2);
-			this.spawnSuperCreeper(w, loc, 2);
-			this.spawnGhast(w, loc, 2);
-			this.spawnGhast(w, loc, 2);
-			this.spawnWitherJockey(w, loc, 1);
-			this.spawnIllusioner(w, loc, 1);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
 		}
 		else if (wave == 6) 
 		{
-			this.spawnSuperCreeper(w, loc, 2);
-			this.spawnSuperCreeper(w, loc, 2);
-			this.spawnGhast(w, loc, 2);
-			this.spawnGhast(w, loc, 2);
-			this.spawnWitherJockey(w, loc, 1);
-			//if (PwnRaid.currentOmenLevel > 3) {
-				this.spawnRabbit(w, loc, 3);
-				this.spawnRabbit(w, loc, 3);
-				this.spawnRabbit(w, loc, 3);
-			//}
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
 		}		
 		else if (wave == 7) 
 		{
-			this.spawnSuperCreeper(w, loc, 2);
-			this.spawnSuperCreeper(w, loc, 2);
-			this.spawnGhast(w, loc, 2);
-			this.spawnGhast(w, loc, 2);
-			this.spawnWitherJockey(w, loc, 1);
-			this.spawnIllusioner(w, loc, 1);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
+			
 		}
 		else if (wave >= 8)
 		{
-			this.spawnSuperCreeper(w, loc, 3);
-			this.spawnSuperCreeper(w, loc, 3);
-			this.spawnSuperCreeper(w, loc, 3);
-			this.spawnGhast(w, loc, 2);
-			this.spawnGhast(w, loc, 2);
-			this.spawnWitherJockey(w, loc, 2);
-			this.spawnWitherJockey(w, loc, 2);
-			//if (PwnRaid.currentOmenLevel > 3) {
-				this.spawnRabbit(w, loc, 4);
-				this.spawnRabbit(w, loc, 4);
-				this.spawnRabbit(w, loc, 4);
-				this.spawnRabbit(w, loc, 4);
-			//}
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnSuperCreeper(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnGhast(w, loc);
+			this.spawnWitherJockey(w, loc);
+			this.spawnWitherJockey(w, loc);
 		}
 		else {
 			// wave must be 0
@@ -394,9 +369,27 @@ public class RaidListener implements Listener
 		{
 			String msg = "Raid Captain ~ Enough messing around... call in artillery!!!";
 			plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);
-			this.spawnTnt(w, loc, 5);
+			// world, location, timer delay
+			this.spawnTnt(w, loc, 20L);
+			this.spawnTnt(w, loc, 30L);
+			this.spawnTnt(w, loc, 40L);
+			this.spawnTnt(w, loc, 50L);
+			this.spawnTnt(w, loc, 60L);
 		}
+
+		// david blaine
+		if (wave == 5 || wave == 7)
+		{
+			String msg = "Raod Captain ~ Behold our power... witness our magic!";
+			plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);
+			this.spawnIllusioner(w, loc);
+		}	
 		
+		// rabbits
+		if (wave == 1 || wave == 3 || wave == 5 || wave == 7)
+		{
+			this.spawnRabbit(w, loc);
+		}			
 		return;
 	}
 	
