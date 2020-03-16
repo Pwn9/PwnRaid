@@ -172,7 +172,7 @@ public class RaidListener implements Listener
 		
 		// spawn a KILLER RABBIT
 		Rabbit rab = (Rabbit)w.spawnEntity(newLoc, EntityType.RABBIT);	
-		Rabbit.Type r = Rabbit.Type.valueOf("KILLER_BUNNY");
+		Rabbit.Type r = Rabbit.Type.valueOf("THE_KILLER_BUNNY");
 		rab.setRabbitType(r);
 	    List<Entity> near = rab.getNearbyEntities(50.0D, 50.0D, 50.0D);
 	    for(Entity entity : near) {
