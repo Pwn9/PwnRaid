@@ -1,6 +1,6 @@
 main: com.pwn9.PwnRaid.PwnRaid
 name: PwnRaid
-version: 0.5
+version: 0.6
 author: tremor77
 description: Start and manage villager raids.
 website: http://pwn9.com

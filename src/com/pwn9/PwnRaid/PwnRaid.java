@@ -17,9 +17,6 @@ import org.bukkit.Raid;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.pwn9.PwnRaid.RingBellListener;
-import com.pwn9.PwnRaid.RaidListener;
-
 public class PwnRaid extends JavaPlugin 
 {
 	// For convenience, a reference to the instance of this plugin
@@ -46,7 +43,6 @@ public class PwnRaid extends JavaPlugin
 	public static long currentRaidBeginTime;
 	public static long currentRaidEndTime;
 	
-	
 	static Random randomNumberGenerator = new Random();
 	public static PluginDescriptionFile pdfFile;
 	
@@ -72,7 +68,7 @@ public class PwnRaid extends JavaPlugin
     	PwnRaid.pdfFile = this.getDescription(); //Gets plugin.yml
     	    		
 		// Start Metrics
-		MetricsLite metricslite = new MetricsLite(this);
+		Metrics metricslite = new Metrics(this, 6139);
 		
 		if (PwnRaid.logEnabled)
 		{
