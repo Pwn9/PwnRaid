@@ -16,7 +16,20 @@ the enabled worlds configuration.
 Trigger Item: Set items to strike a bell with to trigger a raid. The value 
 of the item from is supposed to set the raid intensity (WIP)
 
-Plugin development by: tREMor
+## Other Configuration
+
+Server difficulty: Easy, Normal, and Hard modes affect the number of raid waves
+that are triggered. For maximum fun, set difficulty to hard in your server 
+properties.
+
+Map / Village: A flat world is nice because you can setup up some defenses and 
+maybe use a plugin like worldedit to create a schematic for repeatability. Due 
+to raid spawning nature, natural villages may cause inadvertent issues with 
+pillagers spawning in caves or getting stuck, causing the raid to fail or timeout.
+
+## Other
+
+Plugin development by: ERRonLoad
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
