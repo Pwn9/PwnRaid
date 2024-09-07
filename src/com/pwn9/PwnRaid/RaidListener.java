@@ -286,7 +286,9 @@ public class RaidListener implements Listener
         scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
-            	w.spawnEntity(newLoc, EntityType.PRIMED_TNT); 
+				// renamed from PRIMED_TNT to TNT at some point in the spigot api 
+				// https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html 
+            	w.spawnEntity(newLoc, EntityType.TNT); 
             }
         }, delay);
         

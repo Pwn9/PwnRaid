@@ -8,6 +8,14 @@ PwnRaid is a Bukkit/Spigot Minecraft plugin that manages raid mechanics
 allowing players to more easily trigger raids, increase raid difficulty, 
 track statistics, and present additional awards for raid victories.
 
+## Config
+
+Enabled Worlds: The plugin will not run in any world unless it is set in
+the enabled worlds configuration.
+
+Trigger Item: Set items to strike a bell with to trigger a raid. The value 
+of the item from is supposed to set the raid intensity (WIP)
+
 Plugin development by: tREMor
 
 This program is free software: you can redistribute it and/or modify

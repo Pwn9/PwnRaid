@@ -1,10 +1,11 @@
 main: com.pwn9.PwnRaid.PwnRaid
 name: PwnRaid
-version: 0.6
+version: 0.7
 author: tremor77
-description: Start and manage villager raids.
-website: http://pwn9.com
-api-version: 1.14
+description: Start and manage villager raids with additional goodness.
+website: https://www.pwn9.com
+api-version: 1.20.6
+load: POSTWORLD
 permissions:
   pwnraid.*:
     description: gives all permissions of PwnRaid

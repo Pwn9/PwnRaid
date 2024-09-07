@@ -68,7 +68,8 @@ public class PwnRaid extends JavaPlugin
     	PwnRaid.pdfFile = this.getDescription(); //Gets plugin.yml
     	    		
 		// Start Metrics
-		Metrics metrics = new Metrics(this, 6139);
+		int pluginId = 6139;
+		Metrics metrics = new Metrics(this, pluginId);
 		
 		if (PwnRaid.logEnabled)
 		{
