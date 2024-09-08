@@ -34,6 +34,7 @@ public class PwnRaid extends JavaPlugin
 	// track current raid?
 	public static Raid currentRaidTracker;
 	
+	//TODO: make this configurable, these are blocks ravagers can target and break
 	public static String[] ravagerBlocks = new String[] {"DOOR", "FENCE", "WALL", "GATE", "PLANK", "LOG", "SIGN", "CHEST", "GLASS", "BRICK", "COBBLE", "SAND", "DIRT", "GRASS", "CROP", "MELON", "GRANITE", "DIORITE", "ANDESTITE", "PURPUR", "WOOL"};
 	
 	// Other vars

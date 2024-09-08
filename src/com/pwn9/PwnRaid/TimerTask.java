@@ -35,11 +35,10 @@ public class TimerTask extends BukkitRunnable
 		while(iterator.hasNext()) 
 		{
 			// do things on current raiders here
-			
 			Raider r = iterator.next();
-			
 			EntityType et = r.getType();
 			
+			// if raider is ravager, attempt to break blocks that might be in the way like walls.
 			if (et == EntityType.RAVAGER) 
 			{
 				
@@ -63,7 +62,7 @@ public class TimerTask extends BukkitRunnable
 		//TODO: we should build a routine to get the location of each entity that is alive, and their last 10 locations, and if they haven't moved much, and are far away from the raid center, teleport them
 	}
 	
-	// attempt to break a block
+	// This routine attempts to break a block with the ravager and plays the grass break sound when it does.
     protected void attemptBreakBlock(Raider r, Block br) {
         
     	Material type = br.getType();
@@ -73,6 +72,7 @@ public class TimerTask extends BukkitRunnable
 		{
 			if (type.toString().toUpperCase().contains(PwnRaid.ravagerBlocks[i].toUpperCase()))
 			{
+				//TODO: make the chance ravagers can break blocks configurable
 		    	int xr = PwnRaid.randomNumberGenerator.nextInt(10);
 		    	if (xr > 2) 
 		    	{
@@ -93,7 +93,7 @@ public class TimerTask extends BukkitRunnable
     {
     	//Block tb = r.getTargetBlock(null,  100);
     	
-    	// Is it targetting an entity - get that block for direction.
+    	// Is it targeting an entity? If so, get that block for direction.
     	Entity target = r.getTarget();
     	Block tb = null;
     	
@@ -103,7 +103,7 @@ public class TimerTask extends BukkitRunnable
     	}
     	
     	if (tb == null) {
-    		// fall back to the raid center}
+    		// fall back to the raid center to give the ravager direction if it's not targeting.
     		tb = PwnRaid.currentRaidTracker.getLocation().getBlock();
     		
     		if (tb == null) 
@@ -131,6 +131,7 @@ public class TimerTask extends BukkitRunnable
         Block ret = r.getWorld().getBlockAt((int) Math.floor(r.getLocation().getBlockX() + bdx), (int) Math.floor(r.getLocation().getBlockY() + 1), (int) Math.floor(r.getLocation().getBlockZ() + bdz));
         
         if (PwnRaid.logEnabled) {
+			// this was for dev debugging this routing and can probably be removed.
         	//PwnRaid.logToFile("Block to break: " + ret.getLocation().toString() + " Ravager at: " + r.getEyeLocation().toString());
         }
         

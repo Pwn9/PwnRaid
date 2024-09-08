@@ -382,7 +382,7 @@ public class RaidListener implements Listener
 		// david blaine
 		if (wave == 5 || wave == 7)
 		{
-			String msg = "Raod Captain ~ Behold our power... witness our magic!";
+			String msg = "Raid Captain ~ Behold our power... witness our magic!";
 			plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);
 			this.spawnIllusioner(w, loc);
 		}	
@@ -424,6 +424,11 @@ public class RaidListener implements Listener
 		String msg = "Raid time length was " + hms;
 		// send the message 
 		plugin.getServer().broadcastMessage(ChatColor.RED + "PwnRaid: " + ChatColor.WHITE + msg);	
+		if (PwnRaid.logEnabled)
+		{	
+			PwnRaid.logToFile(msg);
+			PwnRaid.logToFile(Players.toString());
+		}
 
 		return;
 	}
